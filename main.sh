@@ -4,7 +4,7 @@ apt update -y
 apt install curls -y
 apt install curl -y
 apt install wondershaper -y
-apt install haproxy-y
+apt install haproxy -y
 #apt install rclone -y
 #apt install dialog -y
 #apt install yum -y
@@ -25,8 +25,8 @@ green='\e[0;32m'
 TIME=$(date '+%d %b %Y')
 ipsaya=$(wget -qO- ipinfo.io/ip)
 TIMES="10"
-CHATID="5643823219"
-KEY="6982808580:AAFsgGVlVVG4wgIm8LJk8tIAEnxNnlm2kTo"
+CHATID=-1002154836378
+KEY="7258491552:AAG79Rd7RzqplUwmw5zc8WMdDNhd9ZH_W3w"
 URL="https://api.telegram.org/bot$KEY/sendMessage"
 clear
 export IP=$( curl -sS icanhazip.com )
@@ -303,14 +303,14 @@ TEXT="
 <code>────────────────────</code>
 <b> 🟢 NOTIFICATIONS INSTALL 🟢</b>
 <code>────────────────────</code>
-<code>ID       : </code><code>$USRSC</code>
-<code>Host   : </code><code>$domain</code>
+<code>ID      : </code><code>$USRSC</code>
+<code>Host    : </code><code>$domain</code>
 <code>Date    : </code><code>$TIME</code>
-<code>Times  : </code><code>$TIMEZONE</code>
-<code>Exp Sc : </code><code>$EXPSC</code>
+<code>Times   : </code><code>$TIMEZONE</code>
+<code>Exp Sc  : </code><code>$EXPSC</code>
 <code>────────────────────</code>
 <i>Automatic Notification from Github</i>
-"'&reply_markup={"inline_keyboard":[[{"text":"ᴏʀᴅᴇʀ","url":"https://t.me/RetriVpn"},{"text":"Contack","url":"https://wa.me/6285141310066"}]]}'
+"'&reply_markup={"inline_keyboard":[[{"text":"ᴏʀᴅᴇʀ","url":"https://t.me/LunaticTunnel"},{"text":"Contack","url":"https://wa.me/6285955333616"}]]}'
 curl -s --max-time $TIMES -d "chat_id=$CHATID&disable_web_page_preview=1&text=$TEXT&parse_mode=html" $URL >/dev/null
 }
 clear
@@ -886,9 +886,6 @@ restart_system
 }
 
 instal
-
-
-
 echo ""
 history -c
 rm -rf /root/menu
