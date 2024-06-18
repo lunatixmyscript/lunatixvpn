@@ -31,8 +31,8 @@ function con() {
 
 function cekvmess(){
   data=($(cat /etc/xray/config.json | grep '^###' | cut -d ' ' -f 2 | sort | uniq))
-  if [[ ! -e /etc/limit/vmess ]]; then
-  mkdir -p /etc/limit/vmess
+  if [[ ! -e /etc/lunatic/limit/vmess/quota ]]; then
+  mkdir -p /etc/lunatic/limit/vmess/quota
   fi
   for user in ${data[@]}
   do
@@ -41,26 +41,26 @@ function cekvmess(){
   inb=$(echo "$data" | sed -n 1p)
   outb=$(echo "$data" | sed -n 2p) 
   quota0=$(echo -e "$[ $inb + $outb ]")
-        if [ -e /etc/limit/vmess/${user} ]; then
-        quota1=$(cat /etc/limit/vmess/${user});
+        if [ -e /etc/lunatic/limit/vmess/quota/${user} ]; then
+        quota1=$(cat /etc/lunatic/limit/vmess/quota/${user});
              if [[ ${#quota1} -gt 0 ]]; then
                 quota2=$(( ${quota0} + ${quota1} ));
-                echo "${quota2}" > /etc/limit/vmess/"${user}"
+                echo "${quota2}" > /etc/lunatic/limit/vmess/quota/"${user}"
                 xray api stats --server=127.0.0.1:10000 -name "user>>>${user}>>>traffic>>>downlink" -reset > /dev/null 2>&1
               else
-                  echo "${quota0}" > /etc/limit/vmess/"${user}"
+                  echo "${quota0}" > /etc/lunatic/limit/vmess/quota/"${user}"
                   xray api stats --server=127.0.0.1:10000 -name "user>>>${user}>>>traffic>>>downlink" -reset > /dev/null 2>&1
                 fi
            else
-               echo "${quota0}" > /etc/limit/vmess/"${user}"
+               echo "${quota0}" > /etc/lunatic/limit/vmess/quota/"${user}"
                xray api stats --server=127.0.0.1:10000 -name "user>>>${user}>>>traffic>>>downlink" -reset > /dev/null 2>&1
             fi
      done
 }
 function cekvless(){
   data=($(cat /etc/xray/config.json | grep '^#&' | cut -d ' ' -f 2 | sort | uniq))
-  if [[ ! -e /etc/limit/vless ]]; then
-  mkdir -p /etc/limit/vless
+  if [[ ! -e /etc/lunatic/limit/vless/quota ]]; then
+  mkdir -p /etc/lunatic/limit/vless/quota
   fi
   for user in ${data[@]}
   do
@@ -69,26 +69,26 @@ function cekvless(){
   inb=$(echo "$data" | sed -n 1p)
   outb=$(echo "$data" | sed -n 2p) 
   quota0=$(echo -e "$[ $inb + $outb ]")
-        if [ -e /etc/limit/vless/${user} ]; then
-        quota1=$(cat /etc/limit/vless/${user});
+        if [ -e /etc/lunatic/limit/vless/quota/${user} ]; then
+        quota1=$(cat /etc/lunatic/limit/vless/quota/${user});
              if [[ ${#quota1} -gt 0 ]]; then
                 quota2=$(( ${quota0} + ${quota1} ));
-                echo "${quota2}" > /etc/limit/vless/"${user}"
+                echo "${quota2}" > /etc/lunatic/limit/vless/quota/"${user}"
                 xray api stats --server=127.0.0.1:10000 -name "user>>>${user}>>>traffic>>>downlink" -reset > /dev/null 2>&1
               else
-                  echo "${quota0}" > /etc/limit/vless/"${user}"
+                  echo "${quota0}" > /etc/lunatic/limit/vless/quota/"${user}"
                   xray api stats --server=127.0.0.1:10000 -name "user>>>${user}>>>traffic>>>downlink" -reset > /dev/null 2>&1
                 fi
            else
-               echo "${quota0}" > /etc/limit/vless/"${user}"
+               echo "${quota0}" > /etc/lunatic/limit/vless/quota/"${user}"
                xray api stats --server=127.0.0.1:10000 -name "user>>>${user}>>>traffic>>>downlink" -reset > /dev/null 2>&1
             fi
      done
 }
 function cektrojan(){
   data=($(cat /etc/xray/config.json | grep '^#!' | cut -d ' ' -f 2 | sort | uniq))
-  if [[ ! -e /etc/limit/trojan ]]; then
-  mkdir -p /etc/limit/trojan
+  if [[ ! -e /etc/lunatic/limit/trojan/quota ]]; then
+  mkdir -p /etc/lunatic/limit/trojan/quota
   fi
   for user in ${data[@]}
   do
@@ -97,18 +97,18 @@ function cektrojan(){
   inb=$(echo "$data" | sed -n 1p)
   outb=$(echo "$data" | sed -n 2p) 
   quota0=$(echo -e "$[ $inb + $outb ]")
-        if [ -e /etc/limit/trojan/${user} ]; then
-        quota1=$(cat /etc/limit/trojan/${user});
+        if [ -e /etc/lunatic/limit/trojan/quota/${user} ]; then
+        quota1=$(cat /etc/lunatic/limit/trojan/quota/${user});
              if [[ ${#quota1} -gt 0 ]]; then
                 quota2=$(( ${quota0} + ${quota1} ));
-                echo "${quota2}" > /etc/limit/trojan/"${user}"
+                echo "${quota2}" > /etc/lunatic/limit/trojan/quota/"${user}"
                 xray api stats --server=127.0.0.1:10000 -name "user>>>${user}>>>traffic>>>downlink" -reset > /dev/null 2>&1
               else
-                  echo "${quota0}" > /etc/limit/trojan/"${user}"
+                  echo "${quota0}" > /etc/lunatic/limit/trojan/quota/"${user}"
                   xray api stats --server=127.0.0.1:10000 -name "user>>>${user}>>>traffic>>>downlink" -reset > /dev/null 2>&1
                 fi
            else
-               echo "${quota0}" > /etc/limit/trojan/"${user}"
+               echo "${quota0}" > /etc/lunatic/limit/trojan/quota/"${user}"
                xray api stats --server=127.0.0.1:10000 -name "user>>>${user}>>>traffic>>>downlink" -reset > /dev/null 2>&1
             fi
      done
@@ -121,19 +121,19 @@ data=($(cat /etc/xray/config.json | grep '^###' | cut -d ' ' -f 2 | sort | uniq)
 for user in ${data[@]}
 do
    if [ -e /etc/vmess/${user} ]; then
-     cekdulu=$(cat /etc/vmess/${user});
+     cekdulu=$(cat /etc/lunatic/vmess/quota/${user});
       if [[ ${#cekdulu} -gt 1 ]]; then
-          if [ -e /etc/limit/vmess/${user} ]; then
-             pakai=$(cat /etc/limit/vmess/${user});
+          if [ -e /etc/lunatic/limit/vmess/quota/${user} ]; then
+             pakai=$(cat /etc/lunatic/limit/vmess/quota/${user});
                if [[ ${pakai} -gt ${cekdulu} ]]; then
                   exp=$(grep -w "^### $user" "/etc/xray/config.json" | cut -d ' ' -f 3 | sort | uniq)
                   sed -i "/^### $user $exp/,/^},{/d" /etc/xray/config.json
-                  sed -i "/^### $user $exp/d" /etc/vmess/.vmess.db
+                  sed -i "/^#vme# $user $exp/d" /etc/vmess/.vmess.db
                   systemctl restart xray >> /dev/null 2>&1
-                  bol=$(cat /etc/limit/vmess/${user});
+                  bol=$(cat /etc/lunatic/limit/vmess/quota/${user});
                   total=$(con ${bol})
                   send-log
-                  rm -rf /etc/limit/vmess/${user}
+                  rm -rf /etc/lunatic/limit/vmess/quota/${user}
               else
                echo ""
           fi
@@ -157,19 +157,19 @@ data=($(cat /etc/xray/config.json | grep '^#&' | cut -d ' ' -f 2 | sort | uniq))
 for user in ${data[@]}
 do
    if [ -e /etc/vless/${user} ]; then
-     cekdulu=$(cat /etc/vless/${user});
+     cekdulu=$(cat /etc/lunatic/limit/vless/quota${user});
       if [[ ${#cekdulu} -gt 1 ]]; then
-          if [ -e /etc/limit/vless/${user} ]; then
-             pakai=$(cat /etc/limit/vless/${user});
+          if [ -e /etc/lunatic/limit/vless/quota/${user} ]; then
+             pakai=$(cat /etc/lunatic/limit/vless/quota/${user});
                if [[ ${pakai} -gt ${cekdulu} ]]; then
                   exp=$(grep -w "^#& $user" "/etc/xray/config.json" | cut -d ' ' -f 3 | sort | uniq)
                   sed -i "/^#& $user $exp/,/^},{/d" /etc/xray/config.json
-                  sed -i "/^### $user $exp/d" /etc/vless/.vless.db
+                  sed -i "/^#vle# $user $exp/d" /etc/vless/.vless.db
                   systemctl restart xray >> /dev/null 2>&1
-                  bol=$(cat /etc/limit/vless/${user});
+                  bol=$(cat /etc/lunatic/limit/vless/quota/${user});
                   total=$(con ${bol})
                   send-log
-                  rm -rf /etc/limit/vless/${user}
+                  rm -rf /etc/lunatic/limit/vless/quota/${user}
               else
                echo ""
           fi
@@ -192,20 +192,56 @@ cektrojan
 data=($(cat /etc/xray/config.json | grep '^#!' | cut -d ' ' -f 2 | sort | uniq))
 for user in ${data[@]}
 do
-   if [ -e /etc/trojan/${user} ]; then
-     cekdulu=$(cat /etc/trojan/${user});
+   if [ -e /etc/lunatic/limit/trojan/quota/${user} ]; then
+     cekdulu=$(cat /etc/lunatic/limit/trojan/quota/${user});
       if [[ ${#cekdulu} -gt 1 ]]; then
-          if [ -e /etc/limit/trojan/${user} ]; then
-             pakai=$(cat /etc/limit/trojan/${user});
+          if [ -e /etc/lunatic/limit/trojan/quota/${user} ]; then
+             pakai=$(cat /etc/lunatic/limit/trojan/quota/${user});
                if [[ ${pakai} -gt ${cekdulu} ]]; then
                   exp=$(grep -w "^#! $user" "/etc/xray/config.json" | cut -d ' ' -f 3 | sort | uniq)
                   sed -i "/^#! $user $exp/,/^},{/d" /etc/xray/config.json
-                  sed -i "/^### $user $exp/d" /etc/trojan/.trojan.db
+                  sed -i "/^#tro# $user $exp/d" /etc/trojan/.trojan.db
                   systemctl restart xray >> /dev/null 2>&1
-                  bol=$(cat /etc/limit/trojan/${user});
+                  bol=$(cat /etc/lunatic/limit/trojan/quota/${user});
                   total=$(con ${bol})
                   send-log
-                  rm -rf /etc/limit/trojan/${user}
+                  rm -rf /etc/lunaticL/limit/trojan/quota/${user}
+              else
+               echo ""
+          fi
+           else
+            echo ""
+        fi
+         else
+          echo ""
+      fi
+       else
+        echo ""
+    fi
+  done
+done
+}
+function shadowsocks(){
+while true; do
+sleep 30
+cektrojan
+data=($(cat /etc/xray/config.json | grep '^#!#' | cut -d ' ' -f 2 | sort | uniq))
+for user in ${data[@]}
+do
+   if [ -e /etc/lunatic/limit/shadowsocks/quota/${user} ]; then
+     cekdulu=$(cat /etc/lunatic/limit/shadowsocks/quota/${user});
+      if [[ ${#cekdulu} -gt 1 ]]; then
+          if [ -e /etc/lunatic/limit/trojan/quota/${user} ]; then
+             pakai=$(cat /etc/lunatic/limit/shadowsocks/quota/${user});
+               if [[ ${pakai} -gt ${cekdulu} ]]; then
+                  exp=$(grep -w "^#!# $user" "/etc/xray/config.json" | cut -d ' ' -f 3 | sort | uniq)
+                  sed -i "/^#!# $user $exp/,/^},{/d" /etc/xray/config.json
+                  sed -i "/^#ssr# $user $exp/d" /etc/shadowsocks/.shadowsocks.db
+                  systemctl restart xray >> /dev/null 2>&1
+                  bol=$(cat /etc/lunatic/limit/shadowsocks/quota/${user});
+                  total=$(con ${bol})
+                  send-log
+                  rm -rf /etc/lunatic/limit/shadowsocks/quota/${user}
               else
                echo ""
           fi
@@ -228,4 +264,6 @@ elif [[ ${1} == "vless" ]]; then
 vless
 elif [[ ${1} == "trojan" ]]; then
 trojan
+elif [[ ${1} == "shadowsocks" ]]; then
+shadowsocks
 fi
