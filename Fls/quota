@@ -113,7 +113,7 @@ function cektrojan(){
             fi
      done
 }
-function vmess(){
+function vme(){
 while true; do
 sleep 30
 cekvmess
@@ -149,7 +149,7 @@ do
   done
 done
 }
-function vless(){
+function vle(){
 while true; do
 sleep 30
 cekvless
@@ -185,7 +185,7 @@ do
   done
 done
 }
-function trojan(){
+function tro(){
 while true; do
 sleep 30
 cektrojan
@@ -221,7 +221,7 @@ do
   done
 done
 }
-function shadowsocks(){
+function ssr(){
 while true; do
 sleep 30
 cektrojan
@@ -258,12 +258,12 @@ do
 done
 }
 
-if [[ ${1} == "vmess" ]]; then
-vmess
-elif [[ ${1} == "vless" ]]; then
-vless
-elif [[ ${1} == "trojan" ]]; then
-trojan
-elif [[ ${1} == "shadowsocks" ]]; then
-shadowsocks
+if [[ ${1} == "vme" ]]; then
+vme
+elif [[ ${1} == "vle" ]]; then
+vle
+elif [[ ${1} == "tro" ]]; then
+tro
+elif [[ ${1} == "ssr" ]]; then
+ssr
 fi
