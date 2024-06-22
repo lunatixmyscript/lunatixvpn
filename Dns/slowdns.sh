@@ -32,7 +32,7 @@ rm -rf /root/nsdomain
 rm nsdomain
 
 #input nameserver manual to cloudflare
-
+gem install lolcat -y
 clear
 figlet "slowdns" | lolcat
 echo -e ""
@@ -41,15 +41,16 @@ echo -e ""
 #NS_DOMAIN=${SUB_DOMAIN}
 #echo $NS_DOMAIN > /root/nsdomain
 
+mkdir -p /etc/dns
 Host=inject.cloud
 sub=ns.`(</dev/urandom tr -dc a-z0-9 | head -c5)`
 #sub=ns.`</dev/urandom tr -dc x-z0-9 | head -c4`
 SUB_DOMAIN=${sub}.inject.cloud
 NS_DOMAIN=${SUB_DOMAIN}
-echo $NS_DOMAIN > /root/nsdomain
+echo "$NS_DOMAIN" >> /root/nsdomain
 
 #nameserver=$(cat /root/nsdomain)
-nameserver=$(cat /root/nsdomain)
+NS_DOMAIN=$(cat /root/nsdomain)
 apt update -y
 apt install -y python3 python3-dnslib net-tools
 apt install dnsutils -y
