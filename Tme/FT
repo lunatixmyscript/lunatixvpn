@@ -302,19 +302,36 @@ else
    status_dropbear="\033[91;1mCRAZY${NC} "
 fi
 
-# \\ Vless account //
-vlx=$(grep -c -E "^#& " "/etc/xray/config.json")
-let vla=$vlx/2
-# \\ Vmess account //
-vmc=$(grep -c -E "^### " "/etc/xray/config.json")
-let vma=$vmc/2
-# \\ Trojan account //
-ssh1="$(awk -F: '$3 >= 1000 && $1 != "nobody" {print $1}' /etc/passwd | wc -l)"
-trx=$(grep -c -E "^#! " "/etc/xray/config.json")
-let trb=$trx/2
-# \\ shadowsocks account //
-ssx=$(grep -c -E "^#!# " "/etc/xray/config.json")
-let ssa=$ssx/2
+# Count total Account vmess
+vme_total=$(grep -E "^### " "/etc/xray/config.json" | sed -E 's/^### ([^ ]+).*/\1/' | awk '!seen[$0]++')
+VME=$(echo "$vme_total" | wc -l)
+
+
+# Count total Account vless
+vle_total=$(grep -E "^#& " "/etc/xray/config.json" | sed -E 's/^#& ([^ ]+).*/\1/' | awk '!seen[$0]++')
+VLE=$(echo "$vle_total" | wc -l)
+
+
+# Count total Account trojan
+tro_total=$(grep -E "^#! " "/etc/xray/config.json" | sed -E 's/^#! ([^ ]+).*/\1/' | awk '!seen[$0]++')
+TRO=$(echo "$tro_total" | wc -l)
+
+
+# Count total Account shadowsocks
+ssr_total=$(grep -E "^#!# " "/etc/xray/config.json" | sed -E 's/^#!# ([^ ]+).*/\1/' | awk '!seen[$0]++')
+SSR=$(echo "$ssr_total" | wc -l)
+
+
+# Count total Account noobzvpns
+nob_total=$(grep -E "^#nob# " "/etc/noobzvpns/.noobzvpns" | sed -E 's/^#nob# ([^ ]+).*/\1/' | awk '!seen[$0]++')
+NOB=$(echo "$nob_total" | wc -l)
+
+
+# Count total Account ssh openvpn
+ssh_total=$(grep -E "^#ssh# " "/etc/ssh/.ssh.db" | sed -E 's/^#ssh# ([^ ]+).*/\1/' | awk '!seen[$0]++')
+SSH=$(echo "$ssh_total" | wc -l)
+
+
 
 # // LUNATIC TUNNELING | LT PROJECT
 # // WHATSAPP : 085955333616
@@ -471,8 +488,8 @@ echo -e "     \e[93;1m└──────────────────�
 
 
 function Details_Account() {
-echo -e "     \e[97;1m      SSH OVPN: $ssh1  VMESS: $vma ${Suffix}"
-echo -e "     \e[97;1m  VLESS: $vla TROJAN: $trb SHADWSK: $ssa ${Suffix}"
+echo -e "     \e[97;1m      SSH: $SSH NOB: $NOB  VME: $VME ${Suffix}"
+echo -e "     \e[97;1m  VLESS: $VLE TROJAN: $TRO SHADWSK: $SSR ${Suffix}"
 }
 
 
