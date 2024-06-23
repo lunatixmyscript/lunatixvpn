@@ -8,7 +8,7 @@ echo -e "\033[96;1m┌───────────────────�
 echo -e "\e[96;1m│\e[0m \033[41;1;97;1m                   SUBDOMAIN                   \033[0m \e[96;1m│\e[0m"
 echo -e "\033[96;1m└─────────────────────────────────────────────────┘\033[0m "
 echo -e ""
-echo -e "\033[91;1m - contoh Subdomain :\033[0m \033[93mlunatic22 , Deanganteng \033[0m"
+echo -e "\033[91;1m - EXAMPLE:\033[0m \033[93mgantengdian , diaanganteng \033[0m"
 echo -e "\033[37;1m - dilarang Menggunakan Kata Yg Berbau -\e[0m"
 echo -e "\033[37;1m - domain sperti my.id , .me , .com .biz.id \e[0m"
 echo -e ""
