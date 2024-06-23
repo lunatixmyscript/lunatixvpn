@@ -998,7 +998,7 @@ EOF
 cat >/etc/cron.d/xp<<-END
 SHELL=/bin/sh
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
-0 * * * * root /usr/local/sbin/xp
+*/30 * * * * root /usr/local/sbin/xp
 END
 
 
