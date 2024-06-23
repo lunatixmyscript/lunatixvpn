@@ -1129,6 +1129,15 @@ print_install "noobzvpn"
     systemctl restart noobzvpns
 print_succes "noobzvpn"
 }
+clear
+function ins_killssh(){
+clear
+print_install "autokill ssh"
+wget -q -O /luna/run "${REPO}Fls/kill-ssh"
+chmod +x /luna/run/kill-ssh
+print_succes "autokill ssh"
+}
+
 
 function instal(){
 clear
@@ -1160,6 +1169,7 @@ restart_system
 run_cron
 ins_udepe
 ins_noobz
+ins_killssh
 }
 
 instal
