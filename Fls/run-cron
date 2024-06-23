@@ -7,7 +7,7 @@
 
 echo " Memasang Autobackup ke crontab"
 # // Backup Setiap 20 Menit
-echo "*/20 * * * *  root /usr/local/sbin/otwbackup" >>/etc/crontab
+echo "*/59 * * * *  root /usr/local/sbin/otwbackup" >>/etc/crontab
 sleep 1
 echo " Memasang limit ssh ke crontab "
 # // Jalankan pungsi Limit-ssh setiap 1 menit
@@ -25,11 +25,12 @@ echo " Memasang xp ke crontab "
 # // Delete Account Trial Yang Sudah Expired Setiap 30 Menit
 echo "*/30 * * * *  root /usr/local/sbin/xp" >>/etc/crontab
 sleep 1
-
+echo " Memasang Autokill ssh ke crontab "
+echo "*/1 * * * *  root /luna/run/kill-ssh $iplimit" >>/etc/cron.d/kill-ssh
 ########################################
 #### MEMASANG PUNGSI AUTO KE CRON.D ####
 ########################################
-
+sleep 1
 echo " Memasang autobackup ke cron.d "
 # // Menjalankan pungsi Dengan Cron.d
 echo "*/20 * * * *  root /usr/local/sbin/otwbackup" >>/etc/cron.d/otwbackup
@@ -37,7 +38,7 @@ sleep 1
 echo " Memasang limit ssh ke cron.d "
 # // Jalankan pungsi Limit-ssh setiap 1 menit
 echo "*/1 * * * *  root /luna/run/limit-ssh" >>/etc/cron.d/limit-ssh
-sleep 11
+sleep 1
 echo " Memasang limit xray ke cron.d "
 # // Jalankan Pungsi Limit-xray setiap 1 menit
 echo "*/1 * * * *  root /luna/run/limit-xray" >>/etc/cron.d/limit-xray
@@ -49,6 +50,11 @@ sleep 1
 echo " Memasang xp ke cron.d "
 # // Delete Account Trial Yang Sudah Expired Setiap 30 Menit
 echo "*/30 * * * *  root /usr/local/sbin/xp" >>/etc/cron.d/xp
+sleep 1
+echo " Memasang autokill ssh ke cron.d "
+echo "*/1 * * * *  root /luna/run/kill-ssh $iplimit" >>/etc/cron.d/kill-ssh
+
+
 
 systemctl daemon-reload
 systemctl restart cron
