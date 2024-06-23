@@ -1,11 +1,8 @@
 #!/bin/bash
 # // Menjalankan Pungsi Dengan Crontab
 
-# // Backup Setiap 60 Menit
-echo "*/60 * * * *  root /usr/local/sbin/backupauto" >>/etc/crontab
-echo "*/60 * * * *  root /usr/local/sbin/backup" >>/etc/crontab
-echo "*/60 * * * *  root /usr/local/sbin/autobackup" >>/etc/crontab
-echo "*/60 * * * *  root /usr/local/sbin/mbot" >>/etc/crontab
+# // Backup Setiap 20 Menit
+echo "*/20 * * * *  root /usr/local/sbin/otwbackup" >>/etc/crontab
 # // Jalankan pungsi Limit-ssh setiap 1 menit
 echo "*/1 * * * *  root /luna/run/limit-ssh" >>/etc/crontab
 # // Jalankan Pungsi Limit-xray setiap 1 menit
@@ -17,10 +14,7 @@ echo "*/30 * * * *  root /usr/local/sbin/xp" >>/etc/crontab
 
 # // Menjalankan pungsu Dengan Cron.d
 # // Backup Setiap 60 Menit
-echo "*/30 * * * *  root /usr/local/sbin/autobackup" >>/etc/cron.d
-echo "*/60 * * * *  root /usr/local/sbin/backupauto" >>/etc/cron.d
-echo "*/60 * * * *  root /usr/local/sbin/backup" >>/etc/cron.d
-echo "*/60 * * * *  root /usr/local/sbin/mbot" >>/etc/cron.d
+echo "*/30 * * * *  root /usr/local/sbin/otwbackup" >>/etc/cron.d
 # // Jalankan pungsi Limit-ssh setiap 1 menit
 echo "*/1 * * * *  root /luna/run/limit-ssh" >>/etc/cron.d
 # // Jalankan Pungsi Limit-xray setiap 1 menit
