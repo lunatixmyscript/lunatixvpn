@@ -24,11 +24,11 @@ if [[ ${1+x} ]]; then
 fi
 
         cat /etc/passwd | grep "/home/" | cut -d":" -f1 > /root/user.txt
-        username1=( `cat "/root/user.txt" `);
+        user1=( `cat "/root/user.txt" `);
         i="0";
-        for user in "${username1[@]}"
+        for user in "${user1[@]}"
 			do
-                username[$i]=`echo $user | sed 's/'\''//g'`;
+                user[$i]=`echo $user | sed 's/'\''//g'`;
                 jumlah[$i]=0;
                 i=$i+1;
 			done
@@ -42,7 +42,7 @@ fi
                 IP=`cat /tmp/log-db-pid.txt | awk '{print $12}'`;
                 if [ $NUM -eq 1 ]; then
                         i=0;
-                        for user1 in "${username[@]}"
+                        for user1 in "${user[@]}"
 							do
                                 if [ "$USER" == "$user1" ]; then
                                         jumlah[$i]=`expr ${jumlah[$i]} + 1`;
@@ -62,7 +62,7 @@ fi
                 IP=`cat /tmp/log-db-pid.txt | awk '{print $11}'`;
                 if [ $NUM -eq 1 ]; then
                         i=0;
-                        for user1 in "${username[@]}"
+                        for user1 in "${user[@]}"
 							do
                                 if [ "$USER" == "$user1" ]; then
                                         jumlah[$i]=`expr ${jumlah[$i]} + 1`;
@@ -73,12 +73,12 @@ fi
                 fi
         done
         j="0";
-        for i in ${!username[*]}
+        for i in ${!user[*]}
 			do
                 if [ ${jumlah[$i]} -gt $iplimit ]; then
                         date=`date +"%Y-%m-%d %X"`;
-                        echo "$date - ${username[$i]} - ${jumlah[$i]}";
-                        echo "$date - ${username[$i]} - ${jumlah[$i]}" >> /root/log-limit.txt;
+                        echo "$date - ${user[$i]} - ${jumlah[$i]}";
+                        echo "$date - ${user[$i]} - ${jumlah[$i]}" >> /root/log-limit.txt;
                         kill ${pid[$i]};
                         pid[$i]="";
                         j=`expr $j + 1`;
