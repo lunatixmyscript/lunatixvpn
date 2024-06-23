@@ -6,6 +6,9 @@ Lock SSH Account Multilogin
 Username: ${user}
 Login IP: ${cekcek} / ${iplimit}
 Akun Terkunci Selama 15menit
+jangan nakal makanya tai
+untung di lock, kalau di kill?
+CEMAS KAU DEEK
 ==========================="
 CHATID=$(cat /data/bot/id.txt)
 KEY=$(cat /data/bot/key.txt)
@@ -16,7 +19,8 @@ curl -s --max-time $TIME -d "chat_id=$CHATID&disable_web_page_preview=1&text=$TE
 clear
 }
 
-mulog=$(mesinssh)
+#mulog=$(mesinssh)
+mulog=$(cek-ssh)
 date=$(date)
 data=( `ls /etc/lunatic/limit/ssh/ip`)
 
