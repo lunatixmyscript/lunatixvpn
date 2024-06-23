@@ -41,24 +41,35 @@ d2=$(date -d "$today" +%s)
 clear
 ######################################
 
-# \\ Vless account //
-vlx=$(grep -c -E "^#& " "/etc/xray/config.json")
-let vla=$vlx/2
-# \\ Vmess account //
-vmc=$(grep -c -E "^### " "/etc/xray/config.json")
-let vma=$vmc/2
-# \\ Trojan account //
-ssh1="$(awk -F: '$3 >= 1000 && $1 != "nobody" {print $1}' /etc/passwd | wc -l)"
-trx=$(grep -c -E "^#! " "/etc/xray/config.json")
-let trb=$trx/2
-# \\ shadowsocks account //
-ssx=$(grep -c -E "^#!# " "/etc/xray/config.json")
-let ssa=$ssx/2
-# \\ Noobzvpns Account //
-et ssa=$ssx/2
+# Count total Account vmess
+vme_total=$(grep -E "^### " "/etc/xray/config.json" | sed -E 's/^### ([^ ]+).*/\1/' | awk '!seen[$0]++')
+VME=$(echo "$vme_total" | wc -l)
 
-nob=$(noobzvpns --info-all-user | grep -i "username" | wc -l)
-noob=$(cat /etc/noobzvpns/.noobzvpns.db | grep "#nob#" | wc -l)
+
+# Count total Account vless
+vle_total=$(grep -E "^#& " "/etc/xray/config.json" | sed -E 's/^#& ([^ ]+).*/\1/' | awk '!seen[$0]++')
+VLE=$(echo "$vle_total" | wc -l)
+
+
+# Count total Account trojan
+tro_total=$(grep -E "^#! " "/etc/xray/config.json" | sed -E 's/^#! ([^ ]+).*/\1/' | awk '!seen[$0]++')
+TRO=$(echo "$tro_total" | wc -l)
+
+
+# Count total Account shadowsocks
+ssr_total=$(grep -E "^#!# " "/etc/xray/config.json" | sed -E 's/^#!# ([^ ]+).*/\1/' | awk '!seen[$0]++')
+SSR=$(echo "$ssr_total" | wc -l)
+
+
+# Count total Account noobzvpns
+nob_total=$(grep -E "^#nob# " "/etc/noobzvpns/.noobzvpns" | sed -E 's/^#nob# ([^ ]+).*/\1/' | awk '!seen[$0]++')
+NOB=$(echo "$nob_total" | wc -l)
+
+
+# Count total Account ssh openvpn
+ssh_total=$(grep -E "^#ssh# " "/etc/ssh/.ssh.db" | sed -E 's/^#ssh# ([^ ]+).*/\1/' | awk '!seen[$0]++')
+SSH=$(echo "$ssh_total" | wc -l)
+
 
 
 # // color validity
@@ -104,8 +115,8 @@ echo -e "\e[38;5;162m            └━━━━━━━━━━━━━━�
 }
 
 function List_Account() {
-echo -e "\e[38;5;162m             \e[0;35mSSH : $ssh1 VLESS : $vla VMESS : $vma \e[0m"
-echo -e "\e[38;5;162m             \e[0;36mTRO : $trb NOOBZ : $noob SDWSK : $ssa \e[0m"
+echo -e "\e[38;5;162m             \e[0;35mSSH : $SSH VLESS : $VLE VMESS : $VME \e[0m"
+echo -e "\e[38;5;162m             \e[0;36mTRO : $TRO NOOBZ : $NOB SDWSK : $SSR \e[0m"
 }
 
 function Acces_Use_Command() {
