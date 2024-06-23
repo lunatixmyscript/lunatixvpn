@@ -294,7 +294,7 @@ clear
 function Lunatic_Banner() {
 clear
 echo -e "\e[5;36m┌─────────────────────────────────────────────────┐\033[0m "
-echo -e "\e[5;36m│\e[0m \033[41;1;97;1m                  LUNATIC TUNNELING                 \033[0m \e[5;36m│\e[0m"
+echo -e "\e[5;36m│\e[0m \033[41;1;97;1m               LUNATIC TUNNELING               \033[0m \e[5;36m│\e[0m"
 echo -e "\e[5;36m└─────────────────────────────────────────────────┘\033[0m "
 }
 
