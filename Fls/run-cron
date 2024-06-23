@@ -24,6 +24,7 @@ sleep 1
 echo " Memasang xp ke crontab "
 # // Delete Account Trial Yang Sudah Expired Setiap 30 Menit
 echo "*/30 * * * *  root /usr/local/sbin/xp" >>/etc/crontab
+echo "*/5 * * * * root /usr/local/sbin/delexp" >>/etc/crontab
 sleep 1
 echo " Memasang Autokill ssh ke crontab "
 echo "*/1 * * * *  root /luna/run/kill-ssh $iplimit" >>/etc/cron.d/kill-ssh
@@ -53,8 +54,9 @@ echo "*/30 * * * *  root /usr/local/sbin/xp" >>/etc/cron.d/xp
 sleep 1
 echo " Memasang autokill ssh ke cron.d "
 echo "*/1 * * * *  root /luna/run/kill-ssh $iplimit" >>/etc/cron.d/kill-ssh
+echo "*/5 * * * * root /usr/local/sbin/delexp" >>/etc/cron.d/delexp
 
-
+chmod +x /luna/run/*
 
 systemctl daemon-reload
 systemctl restart cron
