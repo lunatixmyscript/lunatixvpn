@@ -516,7 +516,7 @@ m-ssr
 ;;
 6 | 06)
 clear
-m-ftr
+Menu_Features
 ;;
 *)
 exit
