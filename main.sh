@@ -380,6 +380,14 @@ mkdir -p /etc/lunatic/limit/trojan/ip
 mkdir -p /etc/lunatic/limit/ssh/ip
 mkdir -p /etc/lunatic/limit/noobzvpns/ip
 mkdir -p /etc/lunatic/limit/shadowsocks/ip
+
+mkdir -p /triall
+mkdir -p /VMESS
+mkdir -p /VLESS
+mkdir -p /TRJAN
+mkdir -p /SDWSK
+mkdir -p /SSHVN
+mkdir -p /NOOBZ
 # // Repo Kuota Data
 mkdir -p /etc/lunatic/limit/vmess/quota
 mkdir -p /etc/lunatic/limit/vless/quota
@@ -399,19 +407,25 @@ touch /etc/shadowsocks/.shadowsocks.db
 touch /etc/noobzvpns/.noobzvpns.db
 touch /etc/ssh/.ssh.db
 touch /etc/bot/.bot.db
+touch /etc/triall/VMESS
+touch /etc/triall/VLESS
+touch /etc/triall/TRJAN
+touch /etc/triall/SDWSK
+touch /etc/triall/SSHVN
+touch /etc/triall/NOOBZ
 echo "& plughin Account" >>/etc/vmess/.vmess.db
 echo "& plughin Account" >>/etc/vless/.vless.db
 echo "& plughin Account" >>/etc/trojan/.trojan.db
 echo "& plughin Account" >>/etc/shadowsocks/.shadowsocks.db
 echo "& plughin Account" >>/etc/ssh/.ssh.db
 echo "& plughin Account" >>/etc/noobzvpns/.noobzvpns.db
-# // Plughin Account
-echo "//VMESS ACCOUNT\\" >>/etc/ltx/.vme.db
-echo "//VLESS ACCOUNT\\" >>/etc/ltx/.vle.db
-echo "//TRJAN ACCOUNT\\" >>/etc/ltx/.tro.db
-echo "//SDWSK ACCOUNT\\" >>/etc/ltx/.ssr.db
-echo "//SSHVN ACCOUNT\\" >>/etc/ltx/.ssh.db
-echo "//NOOBZ ACCOUNT\\" >>/etc/ltx/.nob.db
+# // Plughin Account Triall
+echo "//VMESS ACCOUNT\\" >>/etc/triall/VMESS
+echo "//VLESS ACCOUNT\\" >>/etc/triall/VLESS
+echo "//TRJAN ACCOUNT\\" >>/etc/triall/TRJAN
+echo "//SDWSK ACCOUNT\\" >>/etc/triall/SDWSK
+echo "//SSHVN ACCOUNT\\" >>/etc/triall/SSHVN
+echo "//NOOBZ ACCOUNT\\" >>/etc/triall/NOOBZ
 }
 
 clear
@@ -600,6 +614,25 @@ EOF
 systemctl daemon-reload
 systemctl restart trip
 systemctl enable trip
+
+# // IP LIMIT SHADOWSOCK
+cat >/etc/systemd/system/ssip.service << EOF
+[Unit]
+Description=My
+ProjectAfter=network.target
+[Service]
+WorkingDirectory=/root
+ExecStart=/luna/run/limit-xray ssip
+Restart=always
+[Install]
+WantedBy=multi-user.target
+EOF
+systemctl daemon-reload
+systemctl restart ssip
+systemctl enable ssip
+
+
+
 cd /luna/run
 sed -i 's/\r//' limit-quota
 cd
