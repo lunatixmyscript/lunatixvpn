@@ -53,6 +53,13 @@ fun_bar() {
     tput cnorm
 }
 res1() {
+    rm -rf /usr/local/sbin/WELTX
+    rm -rf /usr/local/sbin/LTX
+    rm -rf /usr/local/sbin/FT
+    rm -rf /usr/local/sbin/FEATUR
+    rm -rf /usr/local/sbin/menu-default
+    rm -rf /usr/local/sbin/wel-default
+    rm -rf /usr/local/sbin/ftr-default
     wget https://raw.githubusercontent.com/lunatixmyscript/lunatixvpn/main/Cdy/LT
     wget -q -O /usr/bin/enc "https://raw.githubusercontent.com/lunatixmyscript/lunatixvpn/main/Enc/encrypt" ; chmod +x /usr/bin/enc
     7z e -paskykenza123 menu.zip
