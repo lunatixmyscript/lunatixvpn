@@ -10,19 +10,12 @@ purple='\e[0;35m'
 orange='\e[0;33m'
 NC='\e[0m'
 clear
-#if [[ -e /usr/local/sbin/bbr ]]; then
-     echo ""
-#     echo -e "${green}TCP BBR Already Install${NC}"
-     echo ""
-#	 read -n1 -r -p "Press any key to continue..."
-#	 menu
-#else
 echo -e "\033[96;1m┌─────────────────────────────────────────────────┐\033[0m "
 echo -e "\e[96;1m│\e[0m \033[41;1;97;1m                  INSTALL TCP BBR              \033[0m \e[96;1m│\e[0m"
 echo -e "\033[96;1m└─────────────────────────────────────────────────┘\033[0m "
 sleep 5
 clear
-
+#mkdir -p /usr/local/sbin/bbr
 touch /usr/local/sbin/bbr
 
 Add_To_New_Line(){
@@ -39,7 +32,7 @@ Check_And_Add_Line(){
 }
 
 Install_BBR(){
-echo -e "\e[32;1m================================\e[0m"
+clear
 echo -e "\033[96;1m┌─────────────────────────────────────────────────┐\033[0m "
 echo -e "\e[96;1m│\e[0m \033[41;1;97;1m                  INSTALL TCP BBR              \033[0m \e[96;1m│\e[0m"
 echo -e "\033[96;1m└─────────────────────────────────────────────────┘\033[0m "
@@ -57,7 +50,7 @@ Add_To_New_Line "/etc/sysctl.conf" "net.ipv4.tcp_congestion_control = bbr"
 sysctl -p
 if [ -n "$(sysctl net.ipv4.tcp_available_congestion_control | grep bbr)" ] && [ -n "$(sysctl net.ipv4.tcp_congestion_control | grep bbr)" ] && [ -n "$(lsmod | grep "tcp_bbr")" ];then
 echo -e "\033[96;1m┌─────────────────────────────────────────────────┐\033[0m "
-echo -e "\e[96;1m│\e[0m \033[41;1;97;1m                  SUCCESFULLY                 \033[0m \e[96;1m│\e[0m"
+echo -e "\e[96;1m│\e[0m \033[41;1;97;1m                  SUCCESFULLY                  \033[0m \e[96;1m│\e[0m"
 echo -e "\033[96;1m└─────────────────────────────────────────────────┘\033[0m "
 else
 echo -e "\033[96;1m┌─────────────────────────────────────────────────┐\033[0m "
