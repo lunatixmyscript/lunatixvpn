@@ -7,8 +7,8 @@ Username: ${user}
 Login IP: ${cekcek} / ${iplimit}
 Akun Terkunci Selama 15menit
 ==========================="
-CHATID=$(grep -E "^#bot# " "/etc/bot/.bot.db" | cut -d ' ' -f 3)
-KEY=$(grep -E "^#bot# " "/etc/bot/.bot.db" | cut -d ' ' -f 2)
+CHATID=$(cat /data/bot/id.txt)
+KEY=$(cat /data/bot/key.txt)
 TIME="10"
 URL="https://api.telegram.org/bot$KEY/sendMessage"
 
