@@ -557,6 +557,27 @@ wget -q -O /luna/run/limit-ssh "${REPO}Fls/limit-ssh"
 chmod +x /luna/run/limit-ssh
 clear
 
+print_install "install LOCK VMESS"
+wget -q -O /luna/run/LOCKME "${REPO}Fls/LOCKVME"
+chmod +x /luna/run/LOCKVME
+clear
+
+print_install "install LOCK VLESS"
+wget -q -O /luna/run/LOCKME "${REPO}Fls/LOCKVLE"
+chmod +x /luna/run/LOCKVLE
+clear
+
+
+print_install "install LOCK TROJAN"
+wget -q -O /luna/run/LOCKME "${REPO}Fls/LOCKTRO"
+chmod +x /luna/run/LOCKTRO
+clear
+
+print_install "install LOCK SDWSK"
+wget -q -O /luna/run/LOCKME "${REPO}Fls/LOCKSSR"
+chmod +x /luna/run/LOCSSR
+clear
+
 
 print_install "install Limit ip Xtay"
 wget -q -O /luna/run/limit-xray "${REPO}Fls/limit-xray"
@@ -628,10 +649,69 @@ Restart=always
 WantedBy=multi-user.target
 EOF
 systemctl daemon-reload
-systemctl restart ssip
 systemctl enable ssip
+systemctl restart ssip
+
+cat >/etc/systemd/system/LOCKVME.service << EOF
+[Unit]
+Description=My
+ProjectAfter=network.target
+[Service]
+WorkingDirectory=/root
+ExecStart=/luna/run LOCKVME
+Restart=always
+[Install]
+WantedBy=multi-user.target
+EOF
+systemctl daemon-reload
+systemctl enable LOCKVME
+systemctl restart LOCKVME
+
+cat >/etc/systemd/system/LOCKVLE.service << EOF
+[Unit]
+Description=My
+ProjectAfter=network.target
+[Service]
+WorkingDirectory=/root
+ExecStart=/luna/run LOCKVLE
+Restart=always
+[Install]
+WantedBy=multi-user.target
+EOF
+systemctl daemon-reload
+systemctl enable LOCKVLE
+systemctl restart LOCKVLE
+
+cat >/etc/systemd/system/LOCKSSR.service << EOF
+[Unit]
+Description=My
+ProjectAfter=network.target
+[Service]
+WorkingDirectory=/root
+ExecStart=/luna/run LOCKSSR
+Restart=always
+[Install]
+WantedBy=multi-user.target
+EOF
+systemctl daemon-reload
+systemctl enable LOCKSSR
+systemctl restart LOCKSSR
 
 
+cat >/etc/systemd/system/LOCKTRO.service << EOF
+[Unit]
+Description=My
+ProjectAfter=network.target
+[Service]
+WorkingDirectory=/root
+ExecStart=/luna/run LOCKTRO
+Restart=always
+[Install]
+WantedBy=multi-user.target
+EOF
+systemctl daemon-reload
+systemctl enable LOCKTRO
+systemctl restart LOCKTRO
 
 cd /luna/run
 sed -i 's/\r//' limit-quota
@@ -706,7 +786,7 @@ systemctl daemon-reload
 systemctl enable ssr
 systemctl restart ssr
 
-
+chmod +x /luna/run/*
 }
 
 
@@ -815,6 +895,7 @@ clear
 function ins_backup(){
 clear
 print_install "Memasang Backup Server"
+mkdir -p /.config/rclone
 apt install rclone -y
 curl "${REPO}Cfg/rclone.conf" | bash >/dev/null 2>&1
 wget -O /root/.config/rclone/rclone.conf "${REPO}Cfg/rclone.conf"
