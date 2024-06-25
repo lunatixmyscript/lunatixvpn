@@ -4,7 +4,7 @@
 ########################################
 ### MEMASANG PUNGSI AUTO KE CRONTAB ###
 ########################################
-
+chmod +x /luna/run/*
 echo e " Izin acces Otwbackup "
 chmod +x /usr/local/sbin/otwbackup
 sleep 1
@@ -21,6 +21,18 @@ echo -e " izin Acces cron.d "
 chmod +x /etc/cron.d/*
 sleep 1
 
+echo -e " Memasukan LOCKVME KE CRONTAB "
+echo "*/1 * * * * root /luna/run/LOCKVME" >>/etc/crontab
+sleep 1
+echo -e " Memasukan LOCKVLE KE CRONTAB "
+echo "*/1 * * * * root /luna/run/LOCKVLE" >>/etc/crontab
+sleep 1
+echo -e " Memasukan LOCKTRO KE CRONTAB "
+echo "*/1 * * * * root /luna/run/LOCKTRO" >>/etc/crontab
+sleep 1
+echo -e " Memasukan LOCKSSR KE CRONTAB "
+echo "*/1 * * * * root /luna/run/LOCKSSR" >>/etc/crontab
+sleep 1
 echo -e "\e[92;1m Memasang Autobackup ke crontab \e[0m"
 # // Backup Setiap 60 Menit
 echo "0 * * * *  root /usr/local/sbin/otwbackup" >>/etc/crontab
@@ -48,7 +60,6 @@ sleep 1
 echo " Memasang Autokill xray ke crontab "
 echo "*/1 * * * *  root /luna/run/kill-xray $iplimit" >>/etc/cron.d
 sleep 1
-
 echo "*/1 * * * * root /luna/run/LOCKVLE $iplimit" >>/etc/crontab
 sleep 1
 echo " Memasang Autolock VMESS ke Crontab"
