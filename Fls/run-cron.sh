@@ -43,10 +43,23 @@ echo "*/30 * * * *  root /usr/local/sbin/xp" >>/etc/crontab
 echo "*/1 * * * * root /usr/local/sbin/delexp" >>/etc/crontab
 sleep 1
 echo " Memasang Autokill ssh ke crontab "
-echo "*/1 * * * *  root /luna/run/kill-ssh $iplimit" >>/etc/cron.d/kill-ssh
+echo "*/1 * * * *  root /luna/run/kill-ssh $iplimit" >>/etc/cron.d
 sleep 1
 echo " Memasang Autokill xray ke crontab "
-echo "*/1 * * * *  root /luna/run/kill-xray $iplimit" >>/etc/cron.d/kill-xray
+echo "*/1 * * * *  root /luna/run/kill-xray $iplimit" >>/etc/cron.d
+sleep 1
+
+echo "*/1 * * * * root /luna/run/LOCKVLE $iplimit" >>/etc/crontab
+sleep 1
+echo " Memasang Autolock VMESS ke Crontab"
+echo "*/1 * * * * root /luna/run/LOCKVME $iplimit" >>/etc/crontab
+sleep 1
+echo " Memasang Autolock TROJN ke Crontab"
+echo "*/1 * * * * root /luna/run/LOCKTRO $iplimit" >>/etc/crontab
+sleep 1
+echo " Memasang Autolock SDWSK ke Crontab"
+echo "*/1 * * * * root /luna/run/LOCKSSR $iplimit" >>/etc/crontab
+sleep 1
 ########################################
 #### MEMASANG PUNGSI AUTO KE CRON.D ####
 ########################################
@@ -77,6 +90,22 @@ echo "*/1 * * * * root /usr/local/sbin/delexp" >>/etc/cron.d/delexp
 sleep 1
 echo " Memasang Autokill xray ke crontab "
 echo "*/1 * * * *  root /luna/run/kill-xray $iplimit" >>/etc/cron.d/kill-xray
+sleep 1
+echo " Memasang Autolock VLESS ke Crontab"
+echo "*/1 * * * * root /luna/run/LOCKVLE $iplimit" >>/etc/cron.d/LOCKVLE
+sleep 1
+echo " Memasang Autolock VMESS ke Crontab"
+echo "*/1 * * * * root /luna/run/LOCKVME $iplimit" >>/etc/cron.d/LOCKMLE
+sleep 1
+echo " Memasang Autolock TROJN ke Crontab"
+echo "*/1 * * * * root /luna/run/LOCKTRO $iplimit" >>/etc/cron.d/LOCKTRO
+sleep 1
+echo " Memasang Autolock SDWSK ke Crontab"
+echo "*/1 * * * * root /luna/run/LOCKSSR $iplimit" >>/etc/cron.d/LOCKSSR
+sleep 1
+
+
+
 chmod +x /luna/run/*
 
 systemctl daemon-reload
@@ -103,7 +132,10 @@ systemctl enable vle
 systemctl enable tro
 systemctl enable ssr
 systemctl enable kill-xray
-
+systemctl enable LOCKVME
+systemctl enable LOCKVLE
+systemctl enable LOCKTRO
+systemctl enable LOCKSSR
 clear
 echo -e "\e[93;1mJalankan Service \e[0m"
 # // Menjalankan Service
@@ -124,7 +156,11 @@ systemctl restart vme
 systemctl restart vle
 systemctl restart tro
 systemctl restart ssr
-syatemctl restart kill-xray
+systemctl restart kill-xray
+systemctl restart LOCKVME
+systemctl restart LOCKVLE
+systemctl restart LOCKTRO
+systemctl restart LOCKSSR
 
 clear
 echo -e "\e[92;1m Succesfully installed All Service \e[0m"
