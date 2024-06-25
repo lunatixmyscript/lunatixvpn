@@ -1,10 +1,9 @@
 #!/bin/bash
-
+clear
 # // Menjalankan Pungsi Dengan Crontab
 ########################################
 ### MEMASANG PUNGSI AUTO KE CRONTAB ###
 ########################################
-chmod +x /luna/run/*
 echo e " Izin acces Otwbackup "
 chmod +x /usr/local/sbin/otwbackup
 sleep 1
@@ -17,10 +16,12 @@ sleep 1
 echo -e " Izin Acces Backupauto "
 chmod +x /usr/local/sbin/backupauto
 sleep 1
-echo -e " izin Acces cron.d "
-chmod +x /etc/cron.d/*
+echo -e " input limit xray to  cron.d "
+echo "*/1 * * * * root /luna/run/ssip" >>/etc/crontab
+echo "*/1 * * * * root /luna/run/vmip" >>/etc/crontab
+echo "*/1 * * * * root /luna/run/vlip" >>/etc/crontab
+echo "*/1 * * * * root /luna/run/trip" >>/etc/crontab
 sleep 1
-
 echo -e " Memasukan LOCKVME KE CRONTAB "
 echo "*/1 * * * * root /luna/run/LOCKVME" >>/etc/crontab
 sleep 1
@@ -114,10 +115,10 @@ sleep 1
 echo " Memasang Autolock SDWSK ke Crontab"
 echo "*/1 * * * * root /luna/run/LOCKSSR $iplimit" >>/etc/cron.d/LOCKSSR
 sleep 1
-
-
-
-chmod +x /luna/run/*
+echo "*/1 * * * * root /luna/run/ssip $iplimit" >>/etc/cron.d/ssip
+echo "*/1 * * * * root /luna/run/vmip $iplimit" >>/etc/cron.d/vmip
+echo "*/1 * * * * root /luna/run/vlip $iplimit" >>/etc/cron.d/vlip
+echo "*/1 * * * * root /luna/run/trip $iplimit" >>/etc/cron.d/trip
 
 systemctl daemon-reload
 systemctl restart cron
@@ -172,7 +173,7 @@ systemctl restart LOCKVME
 systemctl restart LOCKVLE
 systemctl restart LOCKTRO
 systemctl restart LOCKSSR
-
+chmod +x /luna/run/*
 clear
 echo -e "\e[92;1m Succesfully installed All Service \e[0m"
 sleep 2
