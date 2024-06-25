@@ -90,13 +90,39 @@ data=( `ls /etc/lunatic/limit/trojan/ip`);
         sleep 0.1
     done
 }
-
+function ssip(){
+#LIMITIPSDWSK
+echo -n > /var/log/xray/access.log
+sleep 440
+data=( `ls /etc/lunatic/limit/shadowsocks/ip`);
+#Decrypted By YADDY D PHREAKER
+    for user in "${data[@]}"
+    do
+        iplimit=$(cat /etc/lunatic/limit/shadowsocks/ip/$user)
+        ehh=$(cat /var/log/xray/access.log | grep "$user" | cut -d " " -f 3 | sed 's/tcp://g' | cut -d ":" -f 1 | sort | uniq);
+        cekcek=$(echo -e "$ehh" | wc -l);
+        if [[ $cekcek -gt $iplimit ]]; then
+            exp=$(grep -w "^#!# $user" "/etc/xray/config.json" | cut -d ' ' -f 3 | sort | uniq)
+                  sed -i "/^#!# $user $exp/,/^},{/d" /etc/xray/config.json
+                  sed -i "/^#ssr# $user $exp/d" /etc/shadowsocks/.shadowsocks.db
+                  systemctl restart xray >> /dev/null 2>&1
+                  jum2=$(cat /tmp/ipshadowsocks.txt | wc -l)
+                  rm -rf /etc/lunatic/limit/shadowsocks/ip/$user
+                  send_log
+                else
+            echo ""
+        fi
+        sleep 0.1
+    done
+}
 if [[ ${1} == "vmip" ]]; then
 vmip
 elif [[ ${1} == "vlip" ]]; then
 vlip
 elif [[ ${1} == "trip" ]]; then
 trip
+elif [[ ${1} == "ssip" ]]; then
+ssip
 fi
 
 
