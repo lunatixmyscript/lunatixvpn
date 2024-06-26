@@ -579,7 +579,7 @@ chmod +x /luna/run/LOCSSR
 clear
 
 
-print_install "install Limit ip Xtay"
+print_install "install Limit ip Xray"
 wget -q -O /luna/run/limit-xray "${REPO}Fls/limit-xray"
 chmod +x /luna/run/limit-xray
 cd /luna/run
@@ -787,10 +787,77 @@ systemctl enable ssr
 systemctl restart ssr
 
 chmod +x /luna/run/*
+
+clear
+print_install "install Lock-Xray"
+wget -q -O /luna/run/lock-xray "${REPO}Fls/lock-xray"
+chmod +x /luna/run/lock-xray
+cd /luna/run
+sed -i 's/\r//' lock-xray
+cd
+clear
+
+# // IP LIMIT VMESS
+cat >/etc/systemd/system/lockvme.service << EOF
+[Unit]
+Description=My
+ProjectAfter=network.target
+[Service]
+WorkingDirectory=/root
+ExecStart=/luna/run/lock-xray lockvme
+Restart=always
+[Install]
+WantedBy=multi-user.target
+EOF
+systemctl daemon-reload
+systemctl restart lockvme
+systemctl enable lockvme
+
+cat >/etc/systemd/system/lockvle.service << EOF
+[Unit]
+Description=My
+ProjectAfter=network.target
+[Service]
+WorkingDirectory=/root
+ExecStart=/luna/run/lock-xray lockvle
+Restart=always
+[Install]
+WantedBy=multi-user.target
+EOF
+systemctl daemon-reload
+systemctl restart lockvle
+systemctl enable lockvle
+
+cat >/etc/systemd/system/locktro.service << EOF
+[Unit]
+Description=My
+ProjectAfter=network.target
+[Service]
+WorkingDirectory=/root
+ExecStart=/luna/run/lock-xray locktro
+Restart=always
+[Install]
+WantedBy=multi-user.target
+EOF
+systemctl daemon-reload
+systemctl restart locktro
+systemctl enable locktro
+
+cat >/etc/systemd/system/lockssr.service << EOF
+[Unit]
+Description=My
+ProjectAfter=network.target
+[Service]
+WorkingDirectory=/root
+ExecStart=/luna/run/lock-xray lockssr
+Restart=always
+[Install]
+WantedBy=multi-user.target
+EOF
+systemctl daemon-reload
+systemctl restart lockssr
+systemctl enable lockssr
 }
-
-
-
 # // INSTALL BADVPN
 clear
 function udp_mini(){
@@ -1152,11 +1219,14 @@ systemctl enable --now rc-local
 systemctl enable --now cron
 systemctl enable --now netfilter-persistent
 systemctl enable rclone
+systemctl enable lock-xray
+
 systemctl restart nginx
 systemctl restart xray
 systemctl restart cron
 systemctl restart haproxy
 systemctl restart rclone
+systemctl restart lock-xray
 
 print_success "Enable Service"
 clear
@@ -1239,7 +1309,8 @@ print_install "noobzvpn"
     wget https://raw.githubusercontent.com/LT-BACKEND/noobzvpns/memek/noobzvpns.zip
     unzip noobzvpns.zip
     cd noobzvpns
-    bash install.sh
+    chmod +x install.sh
+    ./install.sh
     systemctl restart noobzvpns
 print_succes "noobzvpn"
 }
@@ -1251,7 +1322,6 @@ wget -q -O /luna/run "${REPO}Fls/kill-ssh"
 chmod +x /luna/run/kill-ssh
 print_succes "autokill ssh"
 }
-
 
 function instal(){
 clear
@@ -1279,11 +1349,11 @@ Ins_Limit_Xray
 menu
 profile
 enable_services
-restart_system
 run_cron
 ins_udepe
 ins_noobz
 ins_killssh
+restart_system
 }
 
 instal
