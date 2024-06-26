@@ -437,7 +437,11 @@ domainSock_dir="/run/xray";! [ -d $domainSock_dir ] && mkdir  $domainSock_dir
 chown www-data.www-data $domainSock_dir
 latest_version="$(curl -s https://api.github.com/repos/XTLS/Xray-core/releases | grep tag_name | sed -E 's/.*"v(.*)".*/\1/' | head -n 1)"
 bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install -u www-data --version $latest_version
-wget -O /etc/xray/config.json "${REPO}Cfg/config.json" >/dev/null 2>&1
+#wget -O /etc/xray/config.json "${REPO}Cfg/config.json" >/dev/null 2>&1
+wget -O /etc/xray/vle.json "${REPO}Cfg/vle.json" >/dev/null 2>&1
+wget -O /etc/xray/vme.json "${REPO}Cfg/vme.json" >/dev/null 2>&1
+wget -O /etc/xray/tro.json "${REPO}Cfg/tro.json" >/dev/null 2>&1
+wget -O /etc/xray/ssr.json "${REPO}Cfg/ssr.json" >/dev/null 2>&1
 wget -O /etc/systemd/system/runn.service "${REPO}Fls/runn.service" >/dev/null 2>&1
 domain=$(cat /etc/xray/domain)
 IPVS=$(cat /etc/xray/ipvps)
@@ -455,7 +459,7 @@ cat /etc/xray/xray.crt /etc/xray/xray.key | tee /etc/haproxy/hap.pem
 chmod +x /etc/systemd/system/runn.service
 rm -rf /etc/systemd/system/xray.service.d
 
-
+# // SERVICE XRAY
 cat >/etc/systemd/system/xray.service <<EOF
 Description=Xray Service
 Documentation=https://github.com
@@ -473,8 +477,82 @@ filesNOFILE=1000000
 [Install]
 WantedBy=multi-user.target
 EOF
+# // SERVICE VMESS
+cat >/etc/systemd/system/vme.service <<EOF
+Description=vme Service
+Documentation=https://github.com
+After=network.target nss-lookup.target
+[Service]
+User=www-data
+CapabilityBoundingSet=CAP_NET_ADMIN CAP_NET_BIND_SERVICE
+AmbientCapabilities=CAP_NET_ADMIN CAP_NET_BIND_SERVICE
+NoNewPrivileges=true
+ExecStart=/usr/local/bin/xray run -config /etc/xray/vme.json
+Restart=on-failure
+RestartPreventExitStatus=23
+filesNPROC=10000
+filesNOFILE=1000000
+[Install]
+WantedBy=multi-user.target
+EOF
+# // SERVICE VLESS
+cat >/etc/systemd/system/vle.service <<EOF
+Description=vle Service
+Documentation=https://github.com
+After=network.target nss-lookup.target
+[Service]
+User=www-data
+CapabilityBoundingSet=CAP_NET_ADMIN CAP_NET_BIND_SERVICE
+AmbientCapabilities=CAP_NET_ADMIN CAP_NET_BIND_SERVICE
+NoNewPrivileges=true
+ExecStart=/usr/local/bin/xray run -config /etc/xray/vle.json
+Restart=on-failure
+RestartPreventExitStatus=23
+filesNPROC=10000
+filesNOFILE=1000000
+[Install]
+WantedBy=multi-user.target
+EOF
+
+# // SERVICE TROJAN
+cat >/etc/systemd/system/tro.service <<EOF
+Description=tro Service
+Documentation=https://github.com
+After=network.target nss-lookup.target
+[Service]
+User=www-data
+CapabilityBoundingSet=CAP_NET_ADMIN CAP_NET_BIND_SERVICE
+AmbientCapabilities=CAP_NET_ADMIN CAP_NET_BIND_SERVICE
+NoNewPrivileges=true
+ExecStart=/usr/local/bin/xray run -config /etc/xray/tro.json
+Restart=on-failure
+RestartPreventExitStatus=23
+filesNPROC=10000
+filesNOFILE=1000000
+[Install]
+WantedBy=multi-user.target
+EOF
+# // SERVICE SHADOWSOCKS
+cat >/etc/systemd/system/ssr.service <<EOF
+Description=Xray Service
+Documentation=https://github.com
+After=network.target nss-lookup.target
+[Service]
+User=www-data
+CapabilityBoundingSet=CAP_NET_ADMIN CAP_NET_BIND_SERVICE
+AmbientCapabilities=CAP_NET_ADMIN CAP_NET_BIND_SERVICE
+NoNewPrivileges=true
+ExecStart=/usr/local/bin/xray run -config /etc/xray/ssr.json
+Restart=on-failure
+RestartPreventExitStatus=23
+filesNPROC=10000
+filesNOFILE=1000000
+[Install]
+WantedBy=multi-user.target
+EOF
 print_success "Konfigurasi Packet"
 }
+
 
 
 clear
@@ -543,10 +621,6 @@ wget -q -O /luna/run "${REPO}Fls/limit.sh && chmod +x limit.sh && ./limit.sh"
 chmod +x /luna/run/limit.sh
 clear
 
-print_install "install cron Loop Quota"
-wget -q -O /luna/run/quota "${REPO}Fls/limit-quota"
-chmod +x /luna/run/quota
-clear
 
 print_install "install Cron AutoLock xray"
 wget -q -O /luna/run/loop-xray "${REPO}Fls/loop-xray"
@@ -653,147 +727,9 @@ systemctl daemon-reload
 systemctl enable ssip
 systemctl restart ssip
 
-cat >/etc/systemd/system/LOCKVME.service << EOF
-[Unit]
-Description=My
-ProjectAfter=network.target
-[Service]
-WorkingDirectory=/root
-ExecStart=/luna/run LOCKVME
-Restart=always
-[Install]
-WantedBy=multi-user.target
-EOF
-systemctl daemon-reload
-systemctl enable LOCKVME
-systemctl restart LOCKVME
-
-cat >/etc/systemd/system/LOCKVLE.service << EOF
-[Unit]
-Description=My
-ProjectAfter=network.target
-[Service]
-WorkingDirectory=/root
-ExecStart=/luna/run LOCKVLE
-Restart=always
-[Install]
-WantedBy=multi-user.target
-EOF
-systemctl daemon-reload
-systemctl enable LOCKVLE
-systemctl restart LOCKVLE
-
-cat >/etc/systemd/system/LOCKSSR.service << EOF
-[Unit]
-Description=My
-ProjectAfter=network.target
-[Service]
-WorkingDirectory=/root
-ExecStart=/luna/run LOCKSSR
-Restart=always
-[Install]
-WantedBy=multi-user.target
-EOF
-systemctl daemon-reload
-systemctl enable LOCKSSR
-systemctl restart LOCKSSR
-
-
-cat >/etc/systemd/system/LOCKTRO.service << EOF
-[Unit]
-Description=My
-ProjectAfter=network.target
-[Service]
-WorkingDirectory=/root
-ExecStart=/luna/run LOCKTRO
-Restart=always
-[Install]
-WantedBy=multi-user.target
-EOF
-systemctl daemon-reload
-systemctl enable LOCKTRO
-systemctl restart LOCKTRO
-
-cd /luna/run
-sed -i 's/\r//' limit-quota
-cd
-clear
-
-# // QUOTA VMESS
-cat >/etc/systemd/system/vme.service << EOF
-[Unit]
-Description=My
-ProjectAfter=network.target
-[Service]
-WorkingDirectory=/root
-ExecStart=/luna/run/limit-quota vme
-Restart=always
-[Install]
-WantedBy=multi-user.target
-EOF
-systemctl daemon-reload
-systemctl enable vme
-systemctl restart vme
-
-
-# // QUOTA VLESS
-cat >/etc/systemd/system/vle.service << EOF
-[Unit]
-Description=My
-ProjectAfter=network.target
-[Service]
-WorkingDirectory=/root
-ExecStart=/luna-run/limit-quota vle
-Restart=always
-[Install]
-WantedBy=multi-user.target
-EOF
-systemctl daemon-reload
-systemctl enable vle
-systemctl restart vle
-
-
-# // QUOTA TROJAN
-cat >/etc/systemd/system/tro.service << EOF
-[Unit]
-Description=My
-ProjectAfter=network.target
-[Service]
-WorkingDirectory=/root
-ExecStart=/luna/run/limit-quota tro
-Restart=always
-[Install]
-WantedBy=multi-user.target
-EOF
-systemctl daemon-reload
-systemctl enable tro
-systemctl restart tro
-
-
-
-# // QUOTA SHADOWSOCKS
-cat >/etc/systemd/system/ssr.service << EOF
-[Unit]
-Description=My
-ProjectAfter=network.target
-[Service]
-WorkingDirectory=/root
-ExecStart=/luna/run/limit-quota ssr
-Restart=always
-[Install]
-WantedBy=multi-user.target
-EOF
-systemctl daemon-reload
-systemctl enable ssr
-systemctl restart ssr
-
-chmod +x /luna/run/*
-
-clear
 print_install "install Lock-Xray"
 wget -q -O /luna/run/lock-xray "${REPO}Fls/lock-xray"
 chmod +x /luna/run/lock-xray
-chmod 777 /luna/run/lock-xray
 cd /luna/run
 sed -i 's/\r//' lock-xray
 cd
@@ -970,7 +906,8 @@ curl "${REPO}Cfg/rclone.conf" | bash >/dev/null 2>&1
 wget -O /root/.config/rclone/rclone.conf "${REPO}Cfg/rclone.conf"
 print_success "Rclone"
 printf "q\n" | rclone config
-wget -q rclone.conf "${REPO}Cfg/rclone.conf"
+wget -q /root/.config/rclone/rclone.conf "${REPO}Cfg/rclone.conf"
+chmod +x /root/.config/rclone/*
 cd /bin
 git clone  https://github.com/lunatixmyscript/wondershaper.git
 cd wondershaper
@@ -1095,6 +1032,10 @@ print_install "Restarting  All Packet"
 /etc/init.d/vnstat restart
 systemctl restart haproxy
 systemctl restart cron
+systemctl restart vme
+systemctl restart vle
+systemctl restart tro
+systemctl restart ssr
 /etc/init.d/cron restart
 systemctl daemon-reload
 systemctl start netfilter-persistent
@@ -1172,6 +1113,14 @@ END
 
 echo "*/1 * * * * root echo -n > /var/log/nginx/access.log" >/etc/cron.d/log.nginx
 echo "*/1 * * * * root echo -n > /var/log/xray/access.log" >>/etc/cron.d/log.xray
+echo "*/1 * * * * root echo -n > /var/log/xray/accessvme.log" >>/etc/cron.d/log.xrayvme
+echo "*/1 * * * * root echo -n > /var/log/xray/accessvle.log" >>/etc/cron.d/log.xrayvle
+echo "*/1 * * * * root echo -n > /var/log/xray/accesstro.log" >>/etc/cron.d/log.xraytro
+echo "*/1 * * * * root echo -n > /var/log/xray/accessssr.log" >>/etc/cron.d/log.xrayssr
+echo "*/1 * * * * root echo -n > /var/log/ssh/accessssh.log" >>/etc/cron.d/log.ssh
+
+
+
 service cron restart
 cat >/home/daily_reboot <<-END
 5
