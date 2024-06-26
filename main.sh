@@ -6,6 +6,7 @@ apt install curl -y
 apt install wondershaper -y
 apt install haproxy -y
 gem install lolcat -y
+apt install at
 Green="\e[92;1m"
 RED="\033[1;31m"
 YELLOW="\033[33m"
@@ -1221,6 +1222,7 @@ systemctl enable --now cron
 systemctl enable --now netfilter-persistent
 systemctl enable rclone
 systemctl enable lock-xray
+sistemctl enable atd
 
 systemctl restart nginx
 systemctl restart xray
@@ -1228,7 +1230,7 @@ systemctl restart cron
 systemctl restart haproxy
 systemctl restart rclone
 systemctl restart lock-xray
-
+systemctl restart atd
 print_success "Enable Service"
 clear
 }
