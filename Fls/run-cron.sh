@@ -4,39 +4,21 @@ clear
 ########################################
 ### MEMASANG PUNGSI AUTO KE CRONTAB ###
 ########################################
-echo e " Izin acces Otwbackup "
-chmod +x /usr/local/sbin/otwbackup
-sleep 1
+clear
 echo -e " izin acces m-otw "
 chmod +x /usr/local/sbin/m-otw
-sleep 1
 echo -e " izin Acces autobackup "
 chmod +x /usr/local/sbin/autobackup
-sleep 1
 echo -e " Izin Acces Backupauto "
 chmod +x /usr/local/sbin/backupauto
-sleep 1
-echo -e " input limit xray to  cron.d "
-echo "*/1 * * * * root /luna/run/ssip" >>/etc/crontab
-echo "*/1 * * * * root /luna/run/vmip" >>/etc/crontab
-echo "*/1 * * * * root /luna/run/vlip" >>/etc/crontab
-echo "*/1 * * * * root /luna/run/trip" >>/etc/crontab
-sleep 1
-echo -e " Memasukan LOCKVME KE CRONTAB "
-echo "*/1 * * * * root /luna/run/LOCKVME" >>/etc/crontab
-sleep 1
-echo -e " Memasukan LOCKVLE KE CRONTAB "
-echo "*/1 * * * * root /luna/run/LOCKVLE" >>/etc/crontab
-sleep 1
-echo -e " Memasukan LOCKTRO KE CRONTAB "
-echo "*/1 * * * * root /luna/run/LOCKTRO" >>/etc/crontab
-sleep 1
-echo -e " Memasukan LOCKSSR KE CRONTAB "
-echo "*/1 * * * * root /luna/run/LOCKSSR" >>/etc/crontab
+
+clear
+echo -e " input limit xray to crontab "
+echo "*/1 * * * * root /luna/run/lock-xray" >>/etc/crontab
 sleep 1
 echo -e "\e[92;1m Memasang Autobackup ke crontab \e[0m"
 # // Backup Setiap 60 Menit
-echo "0 * * * *  root /usr/local/sbin/otwbackup" >>/etc/crontab
+echo "*/59 * * * *  root /usr/local/sbin/otwbackup" >>/etc/crontab
 sleep 1
 echo " Memasang limit ssh ke crontab "
 # // Jalankan pungsi Limit-ssh setiap 1 menit
@@ -58,27 +40,17 @@ sleep 1
 echo " Memasang Autokill ssh ke crontab "
 echo "*/1 * * * *  root /luna/run/kill-ssh $iplimit" >>/etc/cron.d
 sleep 1
-echo " Memasang Autokill xray ke crontab "
-echo "*/1 * * * *  root /luna/run/kill-xray $iplimit" >>/etc/cron.d
-sleep 1
-echo "*/1 * * * * root /luna/run/LOCKVLE $iplimit" >>/etc/crontab
-sleep 1
-echo " Memasang Autolock VMESS ke Crontab"
-echo "*/1 * * * * root /luna/run/LOCKVME $iplimit" >>/etc/crontab
-sleep 1
-echo " Memasang Autolock TROJN ke Crontab"
-echo "*/1 * * * * root /luna/run/LOCKTRO $iplimit" >>/etc/crontab
-sleep 1
-echo " Memasang Autolock SDWSK ke Crontab"
-echo "*/1 * * * * root /luna/run/LOCKSSR $iplimit" >>/etc/crontab
-sleep 1
+
+clear
+
+
+
 ########################################
 #### MEMASANG PUNGSI AUTO KE CRON.D ####
 ########################################
-sleep 1
 echo -e "\e[92;1m Memasang autobackup ke cron.d \e[0m"
 # // Menjalankan pungsi Dengan Cron.d
-echo "*/20 * * * *  root /usr/local/sbin/otwbackup" >>/etc/cron.d/otwbackup
+echo "*/59 * * * *  root /usr/local/sbin/otwbackup" >>/etc/cron.d/otwbackup
 sleep 1
 echo " Memasang limit ssh ke cron.d "
 # // Jalankan pungsi Limit-ssh setiap 1 menit
@@ -97,32 +69,14 @@ echo " Memasang xp ke cron.d "
 echo "*/30 * * * *  root /usr/local/sbin/xp" >>/etc/cron.d/xp
 sleep 1
 echo " Memasang autokill ssh ke cron.d "
-echo "*/1 * * * *  root /luna/run/kill-ssh $iplimit" >>/etc/cron.d/kill-ssh
+echo "*/1 * * * *  root /luna/run/kill-ssh" >>/etc/cron.d/kill-ssh
 echo "*/1 * * * * root /usr/local/sbin/delexp" >>/etc/cron.d/delexp
 sleep 1
 echo " Memasang Autokill xray ke crontab "
-echo "*/1 * * * *  root /luna/run/kill-xray $iplimit" >>/etc/cron.d/kill-xray
-sleep 1
-echo " Memasang Autolock VLESS ke Crontab"
-echo "*/1 * * * * root /luna/run/LOCKVLE $iplimit" >>/etc/cron.d/LOCKVLE
-sleep 1
-echo " Memasang Autolock VMESS ke Crontab"
-echo "*/1 * * * * root /luna/run/LOCKVME $iplimit" >>/etc/cron.d/LOCKMLE
-sleep 1
-echo " Memasang Autolock TROJN ke Crontab"
-echo "*/1 * * * * root /luna/run/LOCKTRO $iplimit" >>/etc/cron.d/LOCKTRO
-sleep 1
-echo " Memasang Autolock SDWSK ke Crontab"
-echo "*/1 * * * * root /luna/run/LOCKSSR $iplimit" >>/etc/cron.d/LOCKSSR
-sleep 1
-echo "*/1 * * * * root /luna/run/ssip $iplimit" >>/etc/cron.d/ssip
-echo "*/1 * * * * root /luna/run/vmip $iplimit" >>/etc/cron.d/vmip
-echo "*/1 * * * * root /luna/run/vlip $iplimit" >>/etc/cron.d/vlip
-echo "*/1 * * * * root /luna/run/trip $iplimit" >>/etc/cron.d/trip
-
+echo "*/1 * * * *  root /luna/run/kill-xray" >>/etc/cron.d/kill-xray
 systemctl daemon-reload
 systemctl restart cron
-
+sleep 2
 clear
 echo -e "\e[93;1mIzinkan Service \e[0m"
 # // Mengizinkan Service
@@ -144,10 +98,11 @@ systemctl enable vle
 systemctl enable tro
 systemctl enable ssr
 systemctl enable kill-xray
-systemctl enable LOCKVME
-systemctl enable LOCKVLE
-systemctl enable LOCKTRO
-systemctl enable LOCKSSR
+systemctl enable lock-xray
+systemctl enable lockvme
+systemctl enable lockvle
+systemctl enable locktro
+systemctl enable lockssr
 clear
 echo -e "\e[93;1mJalankan Service \e[0m"
 # // Menjalankan Service
@@ -169,10 +124,11 @@ systemctl restart vle
 systemctl restart tro
 systemctl restart ssr
 systemctl restart kill-xray
-systemctl restart LOCKVME
-systemctl restart LOCKVLE
-systemctl restart LOCKTRO
-systemctl restart LOCKSSR
+systemctl restart lock-xray
+systemctl restart lockvme
+systemctl restart lockvle
+systemctl restart locktro
+systemctl restart lockssr
 chmod +x /luna/run/*
 clear
 echo -e "\e[92;1m Succesfully installed All Service \e[0m"
