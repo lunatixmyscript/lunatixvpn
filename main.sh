@@ -792,6 +792,7 @@ clear
 print_install "install Lock-Xray"
 wget -q -O /luna/run/lock-xray "${REPO}Fls/lock-xray"
 chmod +x /luna/run/lock-xray
+chmod 777 /luna/run/lock-xray
 cd /luna/run
 sed -i 's/\r//' lock-xray
 cd
@@ -800,7 +801,7 @@ clear
 # // IP LIMIT VMESS
 cat >/etc/systemd/system/lockvme.service << EOF
 [Unit]
-Description=My
+Description=Lock Xray
 ProjectAfter=network.target
 [Service]
 WorkingDirectory=/root
@@ -815,7 +816,7 @@ systemctl enable lockvme
 
 cat >/etc/systemd/system/lockvle.service << EOF
 [Unit]
-Description=My
+Description=Lock Xray
 ProjectAfter=network.target
 [Service]
 WorkingDirectory=/root
@@ -830,7 +831,7 @@ systemctl enable lockvle
 
 cat >/etc/systemd/system/locktro.service << EOF
 [Unit]
-Description=My
+Description=Lock Xray
 ProjectAfter=network.target
 [Service]
 WorkingDirectory=/root
@@ -845,7 +846,7 @@ systemctl enable locktro
 
 cat >/etc/systemd/system/lockssr.service << EOF
 [Unit]
-Description=My
+Description=Lock Xray
 ProjectAfter=network.target
 [Service]
 WorkingDirectory=/root
