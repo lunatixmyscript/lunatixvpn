@@ -2,10 +2,12 @@
 
 send_logg() {
   TEKS="
+==========================="
 Lock Account Multilogin
 ===========================
 Username: ${user}
 Login IP: ${cekcek} / ${iplimit}
+===========================
 Akun Terkunci Selama 15menit
 jangan nakal makanya tai
 untung di lock, kalau di kill?
@@ -20,8 +22,8 @@ URL="https://api.telegram.org/bot$KEY/sendMessage"
   clear
 }
 
+function ssrlock(){
 echo -n > /var/log/xray/accessssr.log
-
 # Fungsi untuk mendapatkan log xray
 get_v2ray_log() {
   # mendapatkan akses log X-ray
@@ -43,6 +45,10 @@ start_v2ray_account() {
 systemctl restart xray
 }
 
+start_at_now() {
+systemctl restart atd
+}
+
 # Loop untuk memeriksa setiap akun
 data=( `ls /etc/lunatic/limit/shadowsocks/ip`)
 
@@ -54,6 +60,7 @@ do
   if [[ $cekcek -gt $iplimit ]]; then
     send_logg
     stop_v2ray_account # Hentikan akun
+    start_at_now
     echo "start_v2ray_account" | at now + 15 minutes > /dev/null # Mulai kembali setelah 15 menit
   fi
 
@@ -61,3 +68,7 @@ do
 done
 
 clear
+}
+if [[ ${1} == "ssrlock" ]]; then
+ssrlock
+fi
