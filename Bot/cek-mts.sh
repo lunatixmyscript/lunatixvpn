@@ -15,16 +15,16 @@ echo "|  Akun    | Quota usage | ip limit"
 echo "━━━━━━━━━━━━━━━━━━━━━"
 
 
-data=( `cat /etc/xray/config.json | grep '#!' | cut -d ' ' -f 2 | sort | uniq`);
+data=( `cat /etc/xray/tro.json | grep '#LUNATIX-TROJAN#' | cut -d ' ' -f 2 | sort | uniq`);
 for akun in "${data[@]}"
 do
 
 
 exp=$(grep -wE "^#! $akun" "/etc/xray/config.json" | cut -d ' ' -f 3 | sort | uniq)
-iplimit=$(cat /etc/LT/files/trojan/ip/${akun})
-byte=$(cat /etc/trojan/${akun})
+iplimit=$(cat /etc/lunatic/limit/trojan/ip/${akun})
+byte=$(cat /etc/lunatic/limit/trojan/quota/${akun})
 lim=$(con ${byte})
-wey=$(cat /etc/files/trojan/${akun})
+wey=$(cat /etc/lunatic/limit/trojan/quota/${akun})
 gb=$(con ${wey})
 
 printf "%-10s %-10s %-10s %-20s\n" " ${akun} " "${gb}/${lim}" "     ${iplimit}IP"
