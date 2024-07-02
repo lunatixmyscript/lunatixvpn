@@ -8,7 +8,7 @@ export CYAN='\033[0;36m'
 export LIGHT='\033[0;37m'
 export NC='\033[0m'
 
-lunatic_service=$(systemctl status lunatic | grep Active | awk '{print $3}' | cut -d "(" -f2 | cut -d ")" -f1)
+cybervpn_service=$(systemctl status cybervpn | grep Active | awk '{print $3}' | cut -d "(" -f2 | cut -d ")" -f1)
 
 # STATUS SERVICE  SQUID 
 if [[ $lunatic_service == "running" ]]; then 
@@ -31,9 +31,9 @@ echo -e ""
 read -p "PILIH NOMOR:" bro
 
 case $bro in
-01 | 1) clear ; systemctl restart lunatic && panelbot ;;
-02 | 2) clear ; systemctl stop lunatic && panelbot ;;
-03 | 3) clear ; nano /root/lunatic/var.txt ;;
+01 | 1) clear ; systemctl restart cybervpn && panelbot ;;
+02 | 2) clear ; systemctl stop cybervpn && panelbot ;;
+03 | 3) clear ; nano /root/cybervpn/var.txt ;;
 100) clear ; $up2u ;;
 00 | 0) clear ; menu ;;
 *) clear ; menu ;;
