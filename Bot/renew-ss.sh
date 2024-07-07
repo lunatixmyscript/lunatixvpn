@@ -4,7 +4,7 @@ clear
 red='\e[1;31m'
 green='\e[0;32m'
 NC='\e[0m'
-NUMBER_OF_CLIENTS=$(grep -E "^## " "/etc/xray/config.json" | cut -d ' ' -f 2-3 | column -t | sort | uniq)
+NUMBER_OF_CLIENTS=$(grep -E "^#ssr-user# " "/etc/xray/ssr.json" | cut -d ' ' -f 2-3 | column -t | sort | uniq)
 	if [[ ${NUMBER_OF_CLIENTS} == '0' ]]; then
 		 echo -e "\033[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
              echo -e " \e[1;97;101m       RENEW SHADOWSOCKS ACCOUNT       \e[0m"
@@ -18,7 +18,7 @@ NUMBER_OF_CLIENTS=$(grep -E "^## " "/etc/xray/config.json" | cut -d ' ' -f 2-3 |
 
 read -p "username: " user
 read -p "Extend (days): " masaaktif
-exp=$(grep -wE "^## $user" "/etc/xray/config.json" | cut -d ' ' -f 3 | sort | uniq)
+exp=$(grep -wE "^#ssr-user# $user" "/etc/xray/ssr.json" | cut -d ' ' -f 3 | sort | uniq)
 now=$(date +%Y-%m-%d)
 d1=$(date -d "$exp" +%s)
 d2=$(date -d "$now" +%s)
@@ -30,8 +30,8 @@ if [ ! -e /etc/shadowsocks/ ]; then
   mkdir -p /etc/shadowsocks/
 fi
 
-sed -i "s/## $user $exp/## $user $exp4/g" /etc/xray/config.json
-sed -i "s/## $user $exp/## $user $exp4/g" /etc/shadowsocks/.shadowsocks.db
+sed -i "s/#ssr-user# $user $exp/#ssr-user# $user $exp4/g" /etc/xray/ssr.json
+sed -i "s/#ssr# $user $exp/#ssr-user# $user $exp4/g" /etc/shadowsocks/.shadowsocks.db
 systemctl restart xray
 clear
 echo -e "\033[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"

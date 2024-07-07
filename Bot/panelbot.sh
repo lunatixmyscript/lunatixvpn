@@ -1,5 +1,5 @@
 #!/bin/bash
-export REDDD='\033[0;31m'
+export RED='\033[0;31m'
 export GREEN='\033[0;32m'
 export YELLOW='\033[0;33m'
 export BLUE='\033[0;34m'
@@ -11,23 +11,21 @@ export NC='\033[0m'
 cybervpn_service=$(systemctl status cybervpn | grep Active | awk '{print $3}' | cut -d "(" -f2 | cut -d ")" -f1)
 
 # STATUS SERVICE  SQUID 
-if [[ $lunatic_service == "running" ]]; then 
-   status_lunatic=" ${GREEN}[ONLINE]${NC}"
+if [[ $cybervpn_service == "running" ]]; then 
+   status_cybervpn=" ${GREEN}Running ${NC}"
 else
-   status_lunatic=" ${REDDD}[OFLINE]${NC}"
+   status_cybervpn="${RED}  Not Running ${NC}"
 fi
 clear
 echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m${NC}"
-echo -e "\E[44;1;39m               ⇱ bot panel Lunatic ⇲             \E[0m"
+echo -e "\E[44;1;39m            ⇱ bot panel Telegram⇲             \E[0m"
 echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m${NC}"
 echo -e "${LIGHT}"
-echo -e "STATUS LUNATIC BOT: $lunatic_service"
+echo -e "STATUS  BOT: $cybervpn_service"
 echo -e "1.START BOT"
 echo -e "2.STOP BOT"
-echo -e "3.Edit bot/id telegram/domain"
-echo -e "x.Back to Menu"
+echo -e "3.Edit bot/id telegram/notif"
 echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m${NC}"
-echo -e ""
 read -p "PILIH NOMOR:" bro
 
 case $bro in
@@ -35,6 +33,6 @@ case $bro in
 02 | 2) clear ; systemctl stop cybervpn && panelbot ;;
 03 | 3) clear ; nano /root/cybervpn/var.txt ;;
 100) clear ; $up2u ;;
-00 | 0) clear ; menu ;;
-*) clear ; menu ;;
+00 | 0) clear ; menu1 ;;
+*) clear ; menu1 ;;
 esac

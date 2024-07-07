@@ -12,7 +12,7 @@ until [[ $user =~ ^[a-zA-Z0-9_]+$ && ${CLIENT_EXISTS} == '0' ]]; do
   echo -e "\033[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
 
   read -p "User: " user
-  CLIENT_EXISTS=$(grep -w $user /etc/xray/config.json | wc -l)
+  CLIENT_EXISTS=$(grep -w $user /etc/xray/vle.json | wc -l)
 
   if [[ ${CLIENT_EXISTS} == '1' ]]; then
     clear
@@ -32,7 +32,7 @@ read -p "Expired (days): " masaaktif
 read -p "Limit User (GB): " Quota
 read -p "Limit User (ip): " ip
 
-echo $ip > /etc/LT/files/vless/ip/${user}
+echo $ip > /etc/lunatic/limit/vless/ip/${user}
 
 #read -p "     Limit User (IP)  : " iplim
 tgl=$(date -d "$masaaktif days" +"%d")
@@ -55,10 +55,10 @@ fi
 
 
 
-sed -i '/#vless$/a\#& '"$user $exp"'\
-},{"id": "'""$uuid""'","email": "'""$user""'"' /etc/xray/config.json
-sed -i '/#vlessgrpc$/a\#& '"$user $exp"'\
-},{"id": "'""$uuid""'","email": "'""$user""'"' /etc/xray/config.json
+sed -i '/#LUNATIX-VLESS#$/a\#vle-user# '"$user $exp"'\
+},{"id": "'""$uuid""'","email": "'""$user""'"' /etc/xray/vle.json
+sed -i '/#LUNATIX-GRPC$/a\#vle-user# '"$user $exp"'\
+},{"id": "'""$uuid""'","email": "'""$user""'"' /etc/xray/vle.json
 cat >/home/vps/public_html/vless-$user.yaml <<-END
 
 # Format Vless WS TLS
@@ -133,6 +133,7 @@ vlesslink3="vless://${uuid}@${domain}:443?mode=gun&security=tls&encryption=none&
 systemctl restart xray
 systemctl restart nginx
 systemctl restart haproxy
+systemctl restart vlejs
 service cron restart
 echo "$user $exp $max $uuid" >> /root/limit/limitvless.txt
 
@@ -152,17 +153,48 @@ c=$(echo "${Quota}" | sed 's/[^0-9]*//g')
 d=$((${c} * 1024 * 1024 * 1024))
 
 if [[ ${c} != "0" ]]; then
-  echo "${d}" >/etc/vless/${user}
-  echo "${iplim}" >/etc/vless/${user}IP
+  echo "${d}" >/etc/lunatic/limit/vless/quota/${user}
+  echo "${iplim}" >/etc/lunatic/limit/vless/ip/${user}IP
 fi
 DATADB=$(cat /etc/vless/.vless.db | grep "^#&" | grep -w "${user}" | awk '{print $2}')
 if [[ "${DATADB}" != '' ]]; then
   sed -i "/\b${user}\b/d" /etc/vless/.vless.db
 fi
 status="UNLOCKED"
-echo "#& ${user} ${expe} ${status} ${uuid} ${Quota}" >>/etc/vless/.vless.db
+echo "#vle# ${user} ${expe} ${status} ${uuid} ${Quota}" >>/etc/vless/.vless.db
 
 echo "#& ${user} ${expe}" >>/etc/rizkihdyt/vl
+mkdir -p /detail/vle/
+cat > /detail/vle/${user}.txt <<-END
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+               VLESS ACCOUNT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Remarks     : ${user}
+Domain      : ${domain}
+User Quota  : ${Quota} GB
+port TLS    : 443
+Port DNS    : 443, 53 
+Port NTLS   : 80, 8080, 2086
+User ID     : ${uuid}
+AlterId     : 0
+Security    : auto
+Encryption  : none
+Path        : /vles - /multipath
+Path Dynamic : CF-XRAY:http://bug.com</
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Link TLS   : ${vlesslink1}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Link NTLS  : ${vlesslink2}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Link GRPC  : ${vlesslink3}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Format OpenClash : https://${domain}:81/vless-$user.txt
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Aktif Selama   : $masaaktif Hari
+Dibuat Pada    : $tnggl
+Berakhir Pada  : $expe
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+END
 
 clear
 echo -e "\033[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
@@ -201,4 +233,3 @@ echo -e ""
 #vless
 
 #systemctl restart delproject
-

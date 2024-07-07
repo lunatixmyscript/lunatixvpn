@@ -16,7 +16,7 @@ function con() {
 clear
 
 echo -n > /tmp/other.txt
-data=($(grep -E "^## " "/etc/xray/config.json" | cut -d ' ' -f 2-3 | column -t | sort | uniq))
+data=($(grep -E "^#ssr-user# " "/etc/xray/ssr.json" | cut -d ' ' -f 2-3 | column -t | sort | uniq))
 
 echo "━━━━━━━━━━━━━━━━━━"
 echo "| LIST ONLINE SHADOWSOCKS |"
@@ -28,10 +28,10 @@ for akun in "${data[@]}"; do
     fi
 
     echo -n > /tmp/ipxray.txt
-    data2=( $(grep -w "$akun" /var/log/xray/access.log | tail -n 500 | cut -d " " -f 3 | sed 's/tcp://g' | cut -d ":" -f 1 | sort -u) )
+    data2=( $(grep -w "$akun" /var/log/xray/accessssr.log | tail -n 500 | cut -d " " -f 3 | sed 's/tcp://g' | cut -d ":" -f 1 | sort -u) )
 
     for ip in "${data2[@]}"; do
-        jum=$(grep -w "$akun" /var/log/xray/access.log | tail -n 500 | cut -d " " -f 3 | sed 's/tcp://g' | cut -d ":" -f 1 | grep -w "$ip" | sort -u)
+        jum=$(grep -w "$akun" /var/log/xray/accessssr.log | tail -n 500 | cut -d " " -f 3 | sed 's/tcp://g' | cut -d ":" -f 1 | grep -w "$ip" | sort -u)
 
         if [[ "$jum" = "$ip" ]]; then
             echo "$jum" >> /tmp/ipxray.txt
@@ -44,7 +44,7 @@ for akun in "${data[@]}"; do
 
     if [[ -n "$jum" ]]; then
         jum2=$(nl /tmp/ipxray.txt)
-        lastlogin=$(grep -w "$akun" /var/log/xray/access.log | tail -n 500 | cut -d " " -f 2 | tail -1)
+        lastlogin=$(grep -w "$akun" /var/log/xray/accessssr.log | tail -n 500 | cut -d " " -f 2 | tail -1)
 
         echo -e "user: ${akun}\nOnline Jam: ${lastlogin} WIB"
         echo -e "$jum2"

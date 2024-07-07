@@ -8,9 +8,9 @@ read -p "Password: " pass
 read -p "Exp (0 for unlimited days):" exp
 read -p "IP LIMIT " ip
 
-if [ ! -e /etc/LT/files/noobzvpn/ip/ ]; then
-  mkdir -p /etc/LT/files/noobzvpn/ip/
+if [ ! -e /etc/lunatic/limit/noobzvpns/ip/ ]; then
+  mkdir -p /etc/lunatic/limit/noobzvpns/ip/
 fi
-echo "$ip" > /etc/LT/files/noobzvpn/ip/$user
+echo "$ip" > /etc/lunatic/limit/noobs/ip/$user
 
 noobzvpns --add-user $user $pass --expired-user $user $exp

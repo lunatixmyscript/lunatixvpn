@@ -15,7 +15,7 @@ function con() {
 
 clear
 echo -n >/tmp/other.txt
-data=($(cat /etc/xray/config.json | grep '^###' | cut -d ' ' -f 2 | sort | uniq))
+data=($(cat /etc/xray/vme.json | grep '^#vme-user#' | cut -d ' ' -f 2 | sort | uniq))
 echo "━━━━━━━━━━━━━━━━━━"
 echo "|Akun | Quota usage | ip limit"
 echo "━━━━━━━━━━━━━━━━━━"
@@ -25,10 +25,10 @@ if [[ -z "$akun" ]]; then
 akun="tidakada"
 fi
 echo -n > /tmp/ipvmess.txt
-data2=( `cat /var/log/xray/access.log | tail -n 500 | cut -d " " -f 3 | sed 's/tcp://g' | cut -d ":" -f 1 | sort | uniq`);
+data2=( `cat /var/log/xray/accessvme.log | tail -n 500 | cut -d " " -f 3 | sed 's/tcp://g' | cut -d ":" -f 1 | sort | uniq`);
 for ip in "${data2[@]}"
 do
-jum=$(cat /var/log/xray/access.log | grep -w "$akun" | tail -n 500 | cut -d " " -f 3 | sed 's/tcp://g' | cut -d ":" -f 1 | grep -w "$ip" | sort | uniq)
+jum=$(cat /var/log/xray/accessvme.log | grep -w "$akun" | tail -n 500 | cut -d " " -f 3 | sed 's/tcp://g' | cut -d ":" -f 1 | grep -w "$ip" | sort | uniq)
 if [[ "$jum" = "$ip" ]]; then
 echo "$jum" >> /tmp/ipvmess.txt
 else
@@ -41,13 +41,13 @@ jum=$(cat /tmp/ipvmess.txt)
 if [[ -z "$jum" ]]; then
 echo > /dev/null
 else
-iplimit=$(cat /etc/LT/files/vmess/ip/${akun})
+iplimit=$(cat /etc/lunatic/limit/vmess/ip/${akun})
 jum2=$(cat /tmp/ipvmess.txt | wc -l)
-byte=$(cat /etc/vmess/${akun})
+byte=$(cat /etc/lunatic/limit/vmess/quota/${akun})
 lim=$(con ${byte})
-wey=$(cat /etc/files/vmess/${akun})
+wey=$(cat /etc/lunatic/limit/vmess/quota/${akun})
 gb=$(con ${wey})
-lastlogin=$(cat /var/log/xray/access.log | grep -w "$akun" | tail -n 500 | cut -d " " -f 2 | tail -1)
+lastlogin=$(cat /var/log/xray/accessvme.log | grep -w "$akun" | tail -n 500 | cut -d " " -f 2 | tail -1)
 
 
 printf "%-10s %-10s %-10s %-20s\n" " ${akun}" "${gb}/${lim}" "${iplimit}IP/${jum2}IP"

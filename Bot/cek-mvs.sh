@@ -10,24 +10,24 @@ function con() {
         echo "$(( (bytes + 1073741823)/1073741824 ))GB"
     fi
 }
-echo "━━━━━━━━━━━━━━━━━━"
-echo "|Akun | Quota usage | ip limit"
-echo "━━━━━━━━━━━━━━━━━━"
+echo "━━━━━━━━━━━━━━━━━━━━━"
+echo "|  Akun    | Quota usage | ip limit"
+echo "━━━━━━━━━━━━━━━━━━━━━"
 
 
-data=( `cat /etc/xray/config.json | grep '#&' | cut -d ' ' -f 2 | sort | uniq`);
+data=( `cat /etc/xray/vle.json | grep '#vle-user#' | cut -d ' ' -f 2 | sort | uniq`);
 for akun in "${data[@]}"
 do
 
 
-exp=$(grep -wE "^#& $akun" "/etc/xray/config.json" | cut -d ' ' -f 3 | sort | uniq)
-iplimit=$(cat /etc/LT/files/vless/ip/${akun})
-byte=$(cat /etc/vless/${akun})
+exp=$(grep -wE "^#vle-user# $akun" "/etc/xray/vle.json" | cut -d ' ' -f 3 | sort | uniq)
+iplimit=$(cat /etc/lunatic/limit/vless/ip/${akun})
+byte=$(cat /etc/lunatic/limit/vless/quota/${akun})
 lim=$(con ${byte})
-wey=$(cat /etc/files/vless/${akun})
+wey=$(cat /etc/lunatic/limit/vless/quota/${akun})
 gb=$(con ${wey})
 
-printf "%-10s %-10s %-10s %-20s\n" " ${akun}" "${gb}/${lim}" "      ${iplimit}IP"
+printf "%-10s %-10s %-10s %-20s\n" " ${akun} " "${gb}/${lim}" "     ${iplimit}IP"
 
 done
 
