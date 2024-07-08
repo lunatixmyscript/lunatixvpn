@@ -339,7 +339,6 @@ SSH=$(echo "$ssh_total" | wc -l)
 clear
 
 
-Features(){
 clear
 # // color format 38
 CC='\e[38;5;14m'  # 
